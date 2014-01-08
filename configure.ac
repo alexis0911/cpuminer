@@ -1,4 +1,4 @@
-AC_INIT([cpuminer], [2.2.3])
+AC_INIT([cpuminer], [2.3.1])
 
 AC_PREREQ([2.59c])
 AC_CANONICAL_SYSTEM
@@ -77,6 +77,14 @@ then
       AC_MSG_RESULT(no)
       AC_MSG_WARN([The assembler does not support the XOP instruction set.])
     )
+    AC_MSG_CHECKING(whether we can compile AVX2 code)
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM(,[asm ("vpaddd %ymm0, %ymm1, %ymm2");])],
+      AC_DEFINE(USE_AVX2, 1, [Define to 1 if AVX2 assembly is available.])
+      AC_MSG_RESULT(yes)
+    ,
+      AC_MSG_RESULT(no)
+      AC_MSG_WARN([The assembler does not support the AVX2 instruction set.])
+    )
   ,
     AC_MSG_RESULT(no)
     AC_MSG_WARN([The assembler does not support the AVX instruction set.])
@@ -102,8 +110,8 @@ else
 	JANSSON_LIBS=-ljansson
 fi
 
-LIBCURL_CHECK_CONFIG(, 7.10.1, ,
-  [AC_MSG_ERROR([Missing required libcurl >= 7.10.1])])
+LIBCURL_CHECK_CONFIG(, 7.15.2, ,
+  [AC_MSG_ERROR([Missing required libcurl >= 7.15.2])])
 
 AC_SUBST(JANSSON_LIBS)
 AC_SUBST(PTHREAD_FLAGS)
