@@ -192,10 +192,10 @@ const unsigned char maxNfactor = 30;
 unsigned char GetNfactor(unsigned int nTimestamp) {
     int l = 0;
 
-    if (nTimestamp <= 1367991200)
+    if (nTimestamp <= 1388949883)
         return 4;
 
-    unsigned long int s = nTimestamp - 1367991200;
+    unsigned long int s = nTimestamp - 1388949883;
     while ((s >> 1) > 3) {
       l += 1;
       s >>= 1;
